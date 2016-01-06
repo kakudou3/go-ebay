@@ -30,9 +30,17 @@ type Item struct {
 	Site string `xml:"globalId"`
 }
 
+type Paginate struct {
+	EntriesPerPage int `xml:"entriesPerPage"`
+    PageNumber int `xml:"pageNumber"`
+    TotalEntries int `xml:"totalEntries"`
+    TotalPages int `xml:"totalPages"`
+}
+
 type FindItemsByKeywordResponse struct {
 	XmlName xml.Name `xml:"findItemsByKeywordsResponse"`
 	Items []Item `xml:"searchResult>item"`
+	Paginations []Paginate `xml:"paginationOutput">`
 	Timestamp string `xml:"timestamp"`
 }
 
@@ -128,5 +136,12 @@ func (r *FindItemsByKeywordResponse) Dump() {
 		fmt.Println("\tShips To:        ", i.ShipsTo)
 		fmt.Println("\tSeller Location: ", i.Location)
 		fmt.Println()
+	}
+	
+	for _, p := range r.Paginations {
+		fmt.Println("tEntriesPerPage: ", p.EntriesPerPage)
+		fmt.Println("tPageNumber: ", p.PageNumber)
+		fmt.Println("tTotalEntries: ", p.TotalEntries)
+		fmt.Println("tTotalPages: ", p.TotalPages)
 	}
 }
